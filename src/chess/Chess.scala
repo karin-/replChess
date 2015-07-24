@@ -17,8 +17,9 @@ case class Square(x: Int, y: Int, color: Color.Value, var contents: Option[Chess
       case Some(piece) => piece.toString()
       case None => " "
     }
-
-    if (y == 0) toPrint = "|   " + occupant + "   |" else toPrint = "   " + occupant + "    |"
+    if (y == 0){
+      toPrint = "|   " + occupant + "   |"
+    } else toPrint = "   " + occupant + "    |"
     if (color == Black) {
       toPrint = toPrint.replace(" ", "/")
     }
@@ -31,7 +32,7 @@ object Board {
 
   var capturedWhite = Array[ChessPiece]()
   var capturedBlack = Array[ChessPiece]()
-  val squareHeight = 3
+  val squareHeight = 4
   val squares = Array.ofDim[Square](8,8)
   var currentColor = White
 
@@ -44,7 +45,7 @@ object Board {
   }
 
   def draw() = {
-    val edge = "-----------------------------------------------------------------------"
+    val edge = "------------------------------------------------------------------------"
     for (row <- squares) {
       println(edge)
       for (i <- 1 to squareHeight) {
@@ -77,7 +78,7 @@ abstract class ChessPiece{
     import Board._
     if (isValidMove(x, y)){
       location.contents = None
-      val newLocation : Square = ranks(x)(y)
+      val newLocation : Square = squares(x)(y)
       newLocation.contents match{
         case Some(piece) => if (piece.color == Color.Black) capturedBlack :+ piece else capturedWhite :+ piece
         case _ =>
@@ -92,8 +93,9 @@ abstract class ChessPiece{
 
 case class Pawn(var location: Square, color: Color.Value) extends ChessPiece{
   def isValidMove(newX: Int, newY: Int) = {
-    location.y == newY + 1 && location.x == newX && Board.isValidPosition(newX, newY)
+    location.y == newY + 1 && location.x == newX && Board.isValidPosition(newX, newY) && Board.squares(newX)(newY).contents == None
   }
+  
   override def toString() = "P"
 }
 

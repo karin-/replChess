@@ -126,7 +126,7 @@ case class Row(rank: Int){
 
     println(Edge)
     (1 to height) foreach { line =>
-      print(s"""${if (line == midHeight) rank else " "} """)
+      print(s"""${if (line == midHeight) s"$rank " else EdgePadding}""")
       ('a' to 'h') foreach { file =>
         print("|")
         if (line == midHeight) {

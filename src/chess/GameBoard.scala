@@ -51,13 +51,17 @@ case class GameBoard(pieces: Map[Pos, ChessPiece], captures: Array[ChessPiece]) 
   }
 
   def draw() = {
-    val rows = {
-      (1 to 8).reverse map Row
-    }.toArray
-
-    rows foreach {
-      _.draw(pieces)
+    def drawRows() = (1 to 8).reverse map Row foreach (_.draw(pieces))
+    
+    def printFiles() = {
+      import SquareDimensions._
+      print(EdgePadding)
+      ('a' to 'h') foreach (file => print(" " * midWidth + file + " " * (midWidth - 1)))
+      println()
     }
+    
+    drawRows()
+    printFiles()
   }
 }
 
@@ -100,6 +104,9 @@ object SquareDimensions {
   val height = 3
   val width = 5
   val midHeight = height/2 + 1
+  val midWidth = width/2 + 1
+  final val EdgePadding = "  "
+  final val Edge = EdgePadding + "-" * (width + 1) * 8
 }
 
 case class Row(rank: Int){
@@ -117,9 +124,9 @@ case class Row(rank: Int){
   def draw(pieces: Map[Pos, ChessPiece]) = {
     import SquareDimensions._
 
-    val edge = "-" * (width + 1) * 8
-    println(edge)
+    println(Edge)
     (1 to height) foreach { line =>
+      print(s"""${if (line == midHeight) rank else " "} """)
       ('a' to 'h') foreach { file =>
         print("|")
         if (line == midHeight) {
@@ -135,6 +142,6 @@ case class Row(rank: Int){
       println()
     }
     if (rank == 1)
-      println(edge)
+      println(Edge)
   }
 }

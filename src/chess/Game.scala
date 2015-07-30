@@ -41,15 +41,4 @@ object Game {
     History.clear()
     new Game(GameBoard.newBoard(), White)
   }
-  def printSomething = {
-    println("hi")
-  }
-  class Square(val name: String) {
-    final val a2 = {
-      println("moving " + name + " " + "a2")
-      Game.newGame().move(name + " " + "a2")
-    }
-  }
-  final val a1 = new Square("a1")
-  final val a2 = new Square("a2")
 }
